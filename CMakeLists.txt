@@ -28,16 +28,16 @@ set(SOURCES_UNIT_TESTS
         unit-tests/test_with_native_cpp_pointer_based_arrays.cpp
    )
 
-set(HEADERS_BENCHMARK_TESTS
-        ${HEADERS}
-        benchmark-tests/benchmark_tests_fftw3.h
-        unit-tests/test_fft.cpp
-    )
+# set(HEADERS_BENCHMARK_TESTS
+        # ${HEADERS}
+        # benchmark-tests/benchmark_tests_fftw3.h
+        # unit-tests/test_fft.cpp
+    # )
 
-set(SOURCES_BENCHMARK_TESTS
-        benchmark-tests/benchmark_tests_fftw3.cpp
-        benchmark-tests/benchmark_tests_main.cpp
-    )
+# set(SOURCES_BENCHMARK_TESTS
+        # benchmark-tests/benchmark_tests_fftw3.cpp
+        # benchmark-tests/benchmark_tests_main.cpp
+    # )
    
 # Boost section
 find_package(Boost QUIET)
@@ -149,47 +149,47 @@ else()
     message(STATUS "STLSoft headers were not found, not building a test")
 endif()
 
-# fftw library for benchmark test
-find_path(FFTW_INCLUDEFILE_DIR NAMES fftw3.h fftw)
-if(FFTW_INCLUDEFILE_DIR)
-    find_file(FFTW_INCLUDEFILE_NO_H fftw)
-    if(FFTW_INCLUDEFILE_NO_H)
-        add_definitions("-D_FFTW_INCLUDEFILE_NO_H")
-    endif()
-    include_directories(SYSTEM "${FFTW_INCLUDEFILE_DIR} ${SYSTEM}")
-    message(STATUS "fftw include file was found, looking for library...")
+# # fftw library for benchmark test
+# find_path(FFTW_INCLUDEFILE_DIR NAMES fftw3.h fftw)
+# if(FFTW_INCLUDEFILE_DIR)
+    # find_file(FFTW_INCLUDEFILE_NO_H fftw)
+    # if(FFTW_INCLUDEFILE_NO_H)
+        # add_definitions("-D_FFTW_INCLUDEFILE_NO_H")
+    # endif()
+    # include_directories(SYSTEM "${FFTW_INCLUDEFILE_DIR} ${SYSTEM}")
+    # message(STATUS "fftw include file was found, looking for library...")
 
-    find_library(FFTW_LIB_OPENMP OPTIONAL
-                 NAMES
-                 libfftw3_omp.so
-                 )
+    # find_library(FFTW_LIB_OPENMP OPTIONAL
+                 # NAMES
+                 # libfftw3_omp.so
+                 # )
 
-    find_library(FFTW_LIB OPTIONAL
-                 NAMES
-                 libfftw3.so libfftw-3.3.lib libfftw3-3.dll
-                 )
-    if(FFTW_LIB)
-        add_definitions("-DHAS_FFTW3")
-        message(STATUS "FFTW library was found, will build a benchmark test")
-        if(FFTW_LIB_OPENMP)
-            message(STATUS "OpenMP version of fftw3 was found and will be used")
-        endif()
-    else()
-        message(STATUS "FFTW library was not found, won't build a benchmark test")
-    endif()
-else()
-    message(STATUS "FFTW include file was not found, won't build a benchmark test")
-endif()
+    # find_library(FFTW_LIB OPTIONAL
+                 # NAMES
+                 # libfftw3.so libfftw-3.3.lib libfftw3-3.dll
+                 # )
+    # if(FFTW_LIB)
+        # add_definitions("-DHAS_FFTW3")
+        # message(STATUS "FFTW library was found, will build a benchmark test")
+        # if(FFTW_LIB_OPENMP)
+            # message(STATUS "OpenMP version of fftw3 was found and will be used")
+        # endif()
+    # else()
+        # message(STATUS "FFTW library was not found, won't build a benchmark test")
+    # endif()
+# else()
+    # message(STATUS "FFTW include file was not found, won't build a benchmark test")
+# endif()
 
 add_executable(${UNIT_TESTS} ${HEADERS_UNIT_TESTS} ${SOURCES_UNIT_TESTS})
-add_executable(${BENCHMARK_TESTS} ${HEADERS_BENCHMARK_TESTS} ${SOURCES_BENCHMARK_TESTS})
+# add_executable(${BENCHMARK_TESTS} ${HEADERS_BENCHMARK_TESTS} ${SOURCES_BENCHMARK_TESTS})
 
-if(FFTW_LIB)
-    target_link_libraries(${BENCHMARK_TESTS} ${FFTW_LIB})
-    if(FFTW_LIB_OPENMP)
-        target_link_libraries(${BENCHMARK_TESTS} ${FFTW_LIB_OPENMP})
-    endif()
-endif()
+# if(FFTW_LIB)
+    # target_link_libraries(${BENCHMARK_TESTS} ${FFTW_LIB})
+    # if(FFTW_LIB_OPENMP)
+        # target_link_libraries(${BENCHMARK_TESTS} ${FFTW_LIB_OPENMP})
+    # endif()
+# endif()
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
@@ -231,7 +231,7 @@ else() # not clang
                          )
             set(LIBS ${LIBS} ${omp5_lib})
             target_link_libraries(${UNIT_TESTS} ${omp5_lib})
-            target_link_libraries(${BENCHMARK_TESTS} ${omp5_lib})
+            # target_link_libraries(${BENCHMARK_TESTS} ${omp5_lib})
         endif() # OpenMP
         if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
             set(CMAKE_CXX_FLAGS "-debug -Wall -Werror -Winline -Wdeprecated -Wno-missing-prototypes ${CMAKE_CXX_FLAGS}")
